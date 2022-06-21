@@ -39,8 +39,42 @@ function getWeather(data) {
     })
     .then(function(data){
         console.log(data)
-        // renderCurrent(city,data)
+        renderCurrent(city,data)
     })
+}
+
+// renderCurrent 
+function renderCurrent(city, data) {
+    var header = document.createElement('h3');
+    var iconEl = document.createElement('img');
+    var tempEl = document.createElement('p');
+    var windEl = document.createElement('p');
+    var humidityEl = document.createElement('p');
+    var uvEl = document.createElement('button');
+    var iconUrl = `https://openweathermap.org/img/w/${data.current.weather[0].icon}.png`;
+    var iconDescription = data.current.weather[0].description || weather[0].main;
+    iconEl.setAttribute('src', iconUrl);
+    iconEl.setAttribute('alt', iconDescription);
+
+
+    header.innerHTML = `
+    ${city} 
+    `
+    header.append(iconEl);
+    
+    tempEl.innerHTML = `
+    Temperature: ${data.current.temp} F
+    `
+    windEl.innerHTML = `
+    Wind Speed: ${data.current.wind_speed} mph
+    `
+    humidityEl.innerHTML = `
+    Humidity: ${data.current.humidity} %
+    `
+    uvEl.textContent = data.current.uvi
+
+    current.append(header,tempEl,windEl,humidityEl,uvEl)
+
 }
 
 
