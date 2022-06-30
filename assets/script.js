@@ -6,6 +6,7 @@ var lastCity = [];
 var searchForm = document.getElementById("searchForm")
 var searchCity = document.getElementById("searchCity");
 var current = document.getElementById("current");
+var forecast = document.getElementById("forecast");
 
 
 // CALL TO GET THE COORDINATES
@@ -40,6 +41,7 @@ function getWeather(data) {
     .then(function(data){
         console.log(data)
         renderCurrent(city,data)
+        renderForecast(data.daily);
     })
 }
 
@@ -55,13 +57,16 @@ function renderCurrent(city, data) {
     var iconDescription = data.current.weather[0].description || weather[0].main;
     iconEl.setAttribute('src', iconUrl);
     iconEl.setAttribute('alt', iconDescription);
+    var date = data.current.dt;
+    var convertedDate = dayjs.unix(date).format("M/D/YYYY");
+    current.innerHTML = '';
 
 
     header.innerHTML = `
-    ${city} 
+    ${city} ${convertedDate} 
     `
     header.append(iconEl);
-    
+
     tempEl.innerHTML = `
     Temperature: ${data.current.temp} F
     `
@@ -74,7 +79,55 @@ function renderCurrent(city, data) {
     uvEl.textContent = data.current.uvi
 
     current.append(header,tempEl,windEl,humidityEl,uvEl)
+};
 
+// style the entire div
+function renderForecast(data) {
+    console.log(data)
+    var startDt = dayjs().add(1, 'day').startOf('day').unix();
+    var endDt = dayjs().add(6, 'day').startOf('day').unix();
+    forecast.innerHTML = '';
+    for(var i = 0; i < data.length; i++) {
+        if(data[i].dt >= startDt && data[i].dt < endDt) {
+            renderDailyForcast(data[i])
+        }
+    }
+
+}
+
+
+// styles the card
+function renderDailyForcast(data) {
+    var date = data.dt;
+    var header = document.createElement('h3');
+    var iconEl = document.createElement('img');
+    var tempEl = document.createElement('p');
+    var windEl = document.createElement('p');
+    var humidityEl = document.createElement('p');
+    var cardBody = document.createElement("div");
+    var convertedDate = dayjs.unix(date).format("M/D/YYYY");
+    var iconUrl = `https://openweathermap.org/img/w/${data.weather[0].icon}.png`;
+    var iconDescription = data.weather[0].description || weather[0].main;
+    iconEl.setAttribute('src', iconUrl);
+    iconEl.setAttribute('alt', iconDescription);
+
+    header.innerHTML = `
+    ${convertedDate} 
+    `
+    header.append(iconEl);
+
+    tempEl.innerHTML = `
+    Temperature: ${data.temp.day} F
+    `
+    windEl.innerHTML = `
+    Wind Speed: ${data.wind_speed} mph
+    `
+    humidityEl.innerHTML = `
+    Humidity: ${data.humidity} %
+    `
+
+    cardBody.append(header,tempEl,windEl,humidityEl);
+    forecast.appendChild(cardBody);
 }
 
 
@@ -83,3 +136,8 @@ function renderCurrent(city, data) {
 
 
 searchForm.addEventListener("submit", getCoors)
+
+// heading.setAttribute('class', 'h3 card-title');
+//   tempEl.setAttribute('class', 'card-text');
+//   windEl.setAttribute('class', 'card-text');
+//   humidityEl.setAttribute('class', 'card-text');
