@@ -1,9 +1,9 @@
 /* Commonly used stlying for the website */
 :root{
-    --mainText: font-family: 'Abril Fatface', cursive;
-    --backgroundColor: rgb(133, 163, 151);
+    --mainText: 'Oswald', sans-serif; 
+    --backgroundColor: white;
     --headerColor:rgb(40, 49, 55);
-    --textBox:rgb(63, 91, 85);
+    --headerText: rgb(245, 212, 63);
     --textColor: rgb(238, 233, 233);
 }
 
@@ -27,9 +27,14 @@
 }
 
 .title{
-    color: rgb(127, 127, 112);
+    color: var(--headerText);
     font-family: var(--mainText);
     background-color: var(--headerColor);
-    font-size: 4rem;
+    font-size: 5rem;
 }
 /* STYLING FOR HEADER ENDS */
+
+/* STYLLING FOR THE SEARCH AREA */
+#search-area {
+    border: 5px dashed darkblue;
+}

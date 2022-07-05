@@ -7,7 +7,7 @@
         <!--Links-->
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="./assets/style.css" />
         <!-- <link rel="icon" href="favicon.ico" /> -->
 
@@ -20,16 +20,20 @@
             <h1 class="title">WEATHER DASHBOARD</h1>
         </header>
 
-        <div class="asearch-rea">
+        <div class="search-area">
             <form id="searchForm">
                 <input id="searchCity" />
                 <button type="submit" id="search-btn">Search</button>
             </form>
         </div>
+        
+        <!-- Div to hold the saved cities that are searched for -->
+        <div id="savedCities"></div>
 
+        <!-- Div to allow JS to dynamically add the current weather for the city searched for -->
         <div id="current"></div>
 
-        <!-- insert five divs for the 5 day forecast -->
+        <!--Div to allow JS to dynamically add the 5 day forecast -->
         <div id="forecast"></div>
 
     </body>

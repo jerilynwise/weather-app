@@ -2,12 +2,56 @@
 var keyAPI = "75c11b98c1e96b59417961288d3f315d";
 var BASE_URL = "https://api.openweathermap.org"
 var currentCity = "";
-var lastCity = [];
+var pastCities = [];
 var searchForm = document.getElementById("searchForm")
 var searchCity = document.getElementById("searchCity");
 var current = document.getElementById("current");
 var forecast = document.getElementById("forecast");
+var cityListEl = document.getElementById("savedCities")
 
+// load cities from local storage
+function loadCities() {
+    const storedCities = JSON.parse(localStorage.getItem('pastCities'));
+    if(storedCities) {
+        pastCities = storedCities;
+        displayCities()
+    }
+}
+
+loadCities();
+
+     // Function to display the searched cities with the most recent on top
+     function displayCities() {
+        cityListEl.innerHTML = '';
+        for(let i = pastCities.length -1; i >= 0; i--) {
+            var searchBtn = document.createElement('button');
+            searchBtn.setAttribute('data-search', pastCities[i]);
+            searchBtn.setAttribute('aria-controls', "todays forcast");
+            searchBtn.classList.add("history-btn");
+            searchBtn.textContent = pastCities[i];
+            cityListEl.append(searchBtn);
+        }
+    }
+
+    function appendToSearchHistory(city) {
+        if(pastCities.indexOf(city) !== -1) {
+            return
+        }
+        pastCities.push(city);
+        localStorage.setItem("pastCities", JSON.stringify(pastCities));
+        displayCities();
+    };
+
+    function searchHistoryClick(event) {
+        if(!event.target.matches("history-btn")) {
+            return
+        }
+        var btn = event.target;
+        var city = btn.getAttribute("data-search");
+        getCoors(city);
+
+    }
+    
 
 // CALL TO GET THE COORDINATES
 function getCoors(e) {
@@ -22,9 +66,6 @@ function getCoors(e) {
             alert("Location Not Found")
         }
         else{
-            // console.log(data)
-            // function to take care of local storage
-            // addToHistory()
             getWeather(data[0])
         }
     })
@@ -39,8 +80,9 @@ function getWeather(data) {
         return res.json()
     })
     .then(function(data){
-        console.log(data)
-        renderCurrent(city,data)
+        console.log(data);
+        appendToSearchHistory(city);
+        renderCurrent(city,data);
         renderForecast(data.daily);
     })
 }
@@ -131,13 +173,21 @@ function renderDailyForcast(data) {
 }
 
 
+// function addToHistory(city) { 
+    
+// }
+
 
 
 
 
 searchForm.addEventListener("submit", getCoors)
+cityListEl.addEventListener("click", searchHistoryClick)
 
 // heading.setAttribute('class', 'h3 card-title');
 //   tempEl.setAttribute('class', 'card-text');
 //   windEl.setAttribute('class', 'card-text');
 //   humidityEl.setAttribute('class', 'card-text');
+// element.classList.add()
+// element.classList.remove()
+// bring in CDN for bootstrap
