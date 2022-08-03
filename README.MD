@@ -4,7 +4,8 @@ AS A traveler
 I WANT to see the weather outlook for multiple cities
 SO THAT I can plan a trip accordingly</br>
 
-  
+  ![Weather](https://user-images.githubusercontent.com/102970872/182504081-f7003e80-8596-4252-a106-2dae8db31c05.PNG)
+
   ## Table of Contents
 
   * [Installation](#installation)</br>
