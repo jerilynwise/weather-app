@@ -1,5 +1,5 @@
 // Set global variables, including Open Weather Maps API Key
-var keyAPI = "75c11b98c1e96b59417961288d3f315d";
+var keyAPI = "60201b5063fab0c52f79d8405a4c9865";
 var BASE_URL = "https://api.openweathermap.org"
 var currentCity = "";
 var pastCities = [];
@@ -19,12 +19,13 @@ function loadCities() {
 }
 
 function searchSubmit(e){
+  e.preventDefault();
     // Don't continue if there is nothing in the search form
   if (!searchCity.value) {
     return;
   }
 
-  e.preventDefault();
+  
   var city = searchCity.value.trim();
   getCoors(city);
   searchCity.value = '';
@@ -40,7 +41,7 @@ loadCities();
             var searchBtn = document.createElement('button');
             searchBtn.setAttribute('data-search', pastCities[i]);
             searchBtn.setAttribute('aria-controls', "todays forcast");
-            searchBtn.classList.add("history-btn");
+            searchBtn.classList.add("history-btn", "btn", "btn-dark", "mt-3", "d-block")
             searchBtn.textContent = pastCities[i];
             cityListEl.append(searchBtn);
         }
@@ -79,7 +80,10 @@ function getCoors(city) {
         } else {
           getWeather(data[0]);
         }
-      });
+      }).catch(function(err){
+        console.log(err)
+      })
+      console.log(city)
   }
 
 function getWeather(data) {
@@ -196,6 +200,6 @@ function renderDailyForcast(data) {
 }
 
 
-searchForm.addEventListener("submit", getCoors)
+searchForm.addEventListener("submit", searchSubmit)
 cityListEl.addEventListener("click", searchHistoryClick);
 
